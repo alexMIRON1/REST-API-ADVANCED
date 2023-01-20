@@ -11,6 +11,7 @@ import com.epam.esm.web.dto.GiftCertificateDto;
 import com.epam.esm.web.dto.OrderDto;
 import com.epam.esm.web.dto.UserDto;
 import com.epam.esm.web.converter.Converter;
+import com.epam.esm.web.filter.JwtAuthFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
@@ -52,6 +53,8 @@ class UserControllerTest {
 
     @MockBean
     private UserService userService;
+    @MockBean
+    private JwtAuthFilter jwtAuthFilter;
     @MockBean
     private GiftCertificateService giftCertificateService;
     @MockBean
@@ -123,7 +126,7 @@ class UserControllerTest {
         when(userConverter.toModel(user)).thenReturn(userDto);
         when(userConverter.toEntity(userDto)).thenReturn(user);
         when(certificateConverter.toEntity(giftCertificateDto)).thenReturn(giftCertificate);
-        doNothing().when(userService).makeOrder(user,giftCertificate);
+        when(userService.makeOrder(user,giftCertificate)).thenReturn(order);
         mockMvc.perform(post("/users/1/order").contentType(MediaType.APPLICATION_JSON)
                 .content(jacksonTesterCertificate.write(giftCertificateDto).getJson())).andExpect(status().isOk());
     }

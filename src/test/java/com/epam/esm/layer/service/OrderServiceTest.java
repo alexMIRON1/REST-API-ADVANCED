@@ -1,6 +1,7 @@
 package com.epam.esm.layer.service;
 
 import com.epam.esm.model.entity.Order;
+import com.epam.esm.model.entity.Role;
 import com.epam.esm.model.entity.User;
 import com.epam.esm.model.repository.OrderRepository;
 import com.epam.esm.service.OrderService;
@@ -64,7 +65,8 @@ class OrderServiceTest {
     }
     @Test
     void getAllOrdersByUserIdTest(){
-        User user = new User(1L, "Oleksandr Myronenko",new ArrayList<>());
+        User user = new User(1L, "Oleksandr Myronenko", "password",
+                new Role(1,"User",new ArrayList<>()),new ArrayList<>());
         order.setUser(user);
         when(orderRepository.getAllByUserId(user.getId())).thenReturn(List.of(order));
         Order orderTest = orderService.getAllOrdersByUserId(user.getId())
@@ -81,7 +83,8 @@ class OrderServiceTest {
     }
     @Test
     void getAllOrdersByUserIdTestNoSuchEntity(){
-        User user = new User(1L, "Oleksandr Myronenko",new ArrayList<>());
+        User user = new User(1L, "Oleksandr Myronenko", "password",
+                new Role(1,"User",new ArrayList<>()), new ArrayList<>());
         order.setUser(user);
         when(orderRepository.getAllByUserId(user.getId())).thenReturn(List.of(order));
         assertThrows(NoSuchEntityException.class,()->orderService.getAllOrdersByUserId(5L));

@@ -2,6 +2,7 @@ package com.epam.esm.layer.model;
 
 import com.epam.esm.model.entity.GiftCertificate;
 import com.epam.esm.model.entity.Order;
+import com.epam.esm.model.entity.Role;
 import com.epam.esm.model.entity.User;
 import com.epam.esm.model.repository.OrderRepository;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 @DataJpaTest
 @ComponentScan("com.epam.esm.layer")
-public class OrderRepositoryTest{
+ class OrderRepositoryTest{
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
@@ -30,6 +31,7 @@ public class OrderRepositoryTest{
     void getAllByUserIdTest(){
         testEntityManager.merge(giftCertificate);
         user.setOrders(new ArrayList<>());
+        testEntityManager.merge(new Role(1,"User", new ArrayList<>()));
         testEntityManager.merge(user);
         user.setOrders(List.of(order));
         testEntityManager.merge(order);

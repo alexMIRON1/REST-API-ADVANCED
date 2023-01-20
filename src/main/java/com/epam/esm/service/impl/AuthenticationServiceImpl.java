@@ -30,10 +30,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final UserDetailsService userDetailsService;
     @Override
-    public void register(User user) {
+    public User register(User user) {
         Optional<Role> role = roleRepository.findById(2);
         if(role.isEmpty()){
-            log.error("role does not exist " + role);
+            log.error("role does not exist " + role + " something wrong with database -> check it");
             throw new NoSuchEntityException("This role does not exist");
         }
         user.setRole(role.get());
@@ -41,10 +41,14 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         //find all users
         List<User> userList = userRepository.findAll();
         //get last user's id
-        Long lastId = userList.stream().reduce((first,second)->second).orElseThrow().getId();
+        Long lastId = 0L;
+        if(!userList.isEmpty()){
+             lastId = userList.stream().reduce((first,second)->second).orElseThrow().getId();
+        }
         user.setId(lastId+1);
         userRepository.save(user);
         log.info("successfully registered new user with name " + user.getName());
+        return user;
     }
 
     @Override

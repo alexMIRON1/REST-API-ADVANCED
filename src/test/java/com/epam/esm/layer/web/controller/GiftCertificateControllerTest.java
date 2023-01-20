@@ -5,10 +5,12 @@ import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.web.controller.GiftCertificateController;
 import com.epam.esm.web.dto.GiftCertificateDto;
 import com.epam.esm.web.converter.Converter;
+import com.epam.esm.web.filter.JwtAuthFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.json.JacksonTester;
@@ -57,11 +59,15 @@ class GiftCertificateControllerTest {
     private GiftCertificateDto giftCertificateDto;
     @MockBean
     private PagedResourcesAssembler<GiftCertificate> pagedResourcesAssembler;
+    @MockBean
+    private JwtAuthFilter jwtAuthFilter;
+
 
     @BeforeEach
      public void setUp(){
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         JacksonTester.initFields(this,new ObjectMapper());
+
     }
     @Test
     @SneakyThrows

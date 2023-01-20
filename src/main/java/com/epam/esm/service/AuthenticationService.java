@@ -11,8 +11,9 @@ public interface AuthenticationService {
     /**
      * This method is used to register user.
      * @param user user
+     * @return created user
      */
-    void register(User user);
+    User register(User user);
 
     /**
      * This method is used to sign in user.

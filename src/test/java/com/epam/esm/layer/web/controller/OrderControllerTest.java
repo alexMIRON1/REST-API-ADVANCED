@@ -5,6 +5,7 @@ import com.epam.esm.service.OrderService;
 import com.epam.esm.web.controller.OrderController;
 import com.epam.esm.web.dto.OrderDto;
 import com.epam.esm.web.converter.Converter;
+import com.epam.esm.web.filter.JwtAuthFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
@@ -43,6 +44,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     private Converter<Order,OrderDto> orderConverter;
     @MockBean
     private PagedResourcesAssembler<Order> pagedResourcesAssembler;
+    @MockBean
+    private JwtAuthFilter jwtAuthFilter;
     @Autowired
     private Order order;
     @Autowired

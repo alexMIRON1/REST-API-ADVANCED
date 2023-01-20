@@ -8,6 +8,7 @@ import com.epam.esm.web.controller.TagController;
 import com.epam.esm.web.dto.GiftCertificateDto;
 import com.epam.esm.web.dto.TagDto;
 import com.epam.esm.web.converter.Converter;
+import com.epam.esm.web.filter.JwtAuthFilter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.SneakyThrows;
 import org.junit.jupiter.api.BeforeEach;
@@ -47,6 +48,8 @@ class TagControllerTest {
     private MockMvc mockMvc;
     @MockBean
     private TagService tagService;
+    @MockBean
+    private JwtAuthFilter jwtAuthFilter;
     @MockBean
     private Converter<Tag,TagDto> tagConverter;
     @MockBean

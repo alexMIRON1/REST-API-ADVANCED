@@ -57,7 +57,8 @@ public class SecurityConfig {
                 //Admin
                 .anyRequest().hasRole("Admin")
                 .and().authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+                .oauth2Login();
         return httpSecurity.build();
     }
     @Bean

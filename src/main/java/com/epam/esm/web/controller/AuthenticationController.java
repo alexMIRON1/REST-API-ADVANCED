@@ -24,11 +24,12 @@ public class AuthenticationController {
 
     /**
      * This method is used to register new user.
-     * @param userDto user
+     * @param userDto user dto
+     * @return user dto
      */
     @PostMapping("/register")
-    public void registerUser(@RequestBody UserDto userDto){
-        authenticationService.register(userConverter.toEntity(userDto));
+    public UserDto registerUser(@RequestBody UserDto userDto){
+        return userConverter.toModel(authenticationService.register(userConverter.toEntity(userDto)));
     }
     @PostMapping("/signIn")
     public UserResponseDto signIn(@RequestBody UserDto userDto){

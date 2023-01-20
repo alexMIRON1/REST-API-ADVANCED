@@ -2,6 +2,7 @@ package com.epam.esm.layer.model;
 
 import com.epam.esm.model.entity.GiftCertificate;
 import com.epam.esm.model.entity.Order;
+import com.epam.esm.model.entity.Role;
 import com.epam.esm.model.entity.Tag;
 import com.epam.esm.model.entity.User;
 import com.epam.esm.model.repository.TagRepository;
@@ -44,6 +45,7 @@ class TagRepositoryTest {
         giftCertificate.setTags(List.of(tag));
         testEntityManager.persistAndFlush(giftCertificate);
         user.setOrders(new ArrayList<>());
+        testEntityManager.merge(new Role(1,"User",new ArrayList<>()));
         testEntityManager.merge(user);
         user.setOrders(List.of(order));
         testEntityManager.merge(order);
