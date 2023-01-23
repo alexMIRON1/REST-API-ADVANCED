@@ -1,7 +1,6 @@
 package com.epam.esm.model.repository;
 
 import com.epam.esm.model.entity.Order;
-import com.epam.esm.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -16,10 +15,10 @@ import java.util.List;
 @Repository
 public interface OrderRepository extends JpaRepository<Order,Long> {
     /**
-     * Method for getting list of users by user's id from table.
+     * Method for getting list of orders by user's id from table.
      * @param id user's id
-     * @return list of user
+     * @return list of orders
      */
-    @Query("select o.user from order o join o.user u where u.id = :id")
-    List<User> getAllByUserId(@Param("id") Long id);
+    @Query("select o from order o join o.user u where u.id = :id")
+    List<Order> getAllByUserId(@Param("id") Long id);
 }

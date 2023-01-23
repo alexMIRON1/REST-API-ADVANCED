@@ -36,6 +36,6 @@ public interface GiftCertificateRepository extends JpaRepository<GiftCertificate
      * @return list of certificates
      */
     @Query("select g from gift_certificate g join g.tags t  where t.name = :name")
-    List<GiftCertificate> getGiftCertificateByName(@Param("name") String name);
+    List<GiftCertificate> getGiftCertificateByTagName(@Param("name") String name);
 
 }
