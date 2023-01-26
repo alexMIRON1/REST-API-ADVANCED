@@ -1,37 +1,30 @@
 package com.epam.esm.model.entity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity(name = "tag")
 @Table(name = "tag")
 @Getter
 @Setter
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 public class Tag {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     @ManyToMany(mappedBy = "tags")
     @ToString.Exclude
-    private Set<GiftCertificate> certificates = new HashSet<>();
+    private List<GiftCertificate> certificates = new ArrayList<>();
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

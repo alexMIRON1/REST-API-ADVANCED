@@ -9,6 +9,8 @@ import com.epam.esm.service.exception.NoSuchEntityException;
 import com.epam.esm.service.exception.WrongDataException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -44,8 +46,8 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public List<Tag> getAll() {
-        return tagRepository.findAll();
+    public Page<Tag> getAll(int page, int size) {
+        return tagRepository.findAll(PageRequest.of(page, size));
     }
 
     @Override
@@ -65,7 +67,7 @@ public class TagServiceImpl implements TagService {
             log.error("tag is empty " + tagOptional);
             throw new NoSuchEntityException("This tag with id " + item.getId() + " does not exist");
         }
-        tagRepository.delete(tagOptional.get());
+        tagRepository.deleteById(tagOptional.get().getId());
         log.info("successfully deleted tag -> " + tagOptional);
     }
 

@@ -7,6 +7,8 @@ import com.epam.esm.service.exception.NoSuchEntityException;
 import com.epam.esm.service.exception.WrongDataException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,8 +41,8 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getAll(){
-        return orderRepository.findAll();
+    public Page<Order> getAll(int page, int size){
+        return orderRepository.findAll(PageRequest.of(page, size));
     }
 
     @Override

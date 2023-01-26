@@ -1,6 +1,6 @@
 package com.epam.esm.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
 
 /**
  * Interface {@code CRDService} describes CRD operations for working with objects.
@@ -16,10 +16,12 @@ public interface CRDService<T> {
     T getById(Long id);
 
     /**
-     * Method for getting all entities.
-     * @return List of all entities
+     * Method for returning page of objects
+     * @param page number ob page
+     * @param size number of size in page
+     * @return page of objects
      */
-    List<T> getAll();
+    Page<T> getAll(int page, int size);
 
     /**
      * Method for saving an entity.

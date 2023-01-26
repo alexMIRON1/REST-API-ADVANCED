@@ -3,28 +3,26 @@ package com.epam.esm.web.dto;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 @Getter
 @Setter
 @ToString
-public class UserDto {
+public class UserDto extends RepresentationModel<UserDto> {
     private Long id;
     private String name;
 
     private Set<OrderDto> orders = new HashSet<>();
 
-    public void addOrder(OrderDto orderDto){
-        this.orders.add(orderDto);
-        orderDto.setUser(this);
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
-    public void removeOrder(Long id){
-        OrderDto order = this.orders.stream().filter(t-> Objects.equals(t.getId(),id)).findFirst().orElse(null);
-        if(order!=null){
-            this.orders.remove(order);
-            order.setUser(null);
-        }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

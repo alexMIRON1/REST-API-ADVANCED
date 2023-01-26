@@ -1,43 +1,37 @@
 package com.epam.esm.web.dto;
 
-import com.epam.esm.web.deserializer.GiftCertificatePeriodDeserializer;
 import com.epam.esm.web.serializer.InstantSerializer;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.math.BigDecimal;
 import java.time.Instant;
-import java.time.Period;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 @Getter
 @Setter
 @ToString
-public class GiftCertificateDto {
+public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> {
     private Long id;
     private String name;
+    private String description;
     private BigDecimal price;
-    @JsonDeserialize(using = GiftCertificatePeriodDeserializer.class)
-    private Period duration;
+    private Integer duration;
     @JsonSerialize(using = InstantSerializer.class)
     private Instant createDate;
     @JsonSerialize(using = InstantSerializer.class)
     private Instant lastUpdateDate;
-    private Set<TagDto> tags = new HashSet<>();
-
-    public void addTag(TagDto tag){
-        this.tags.add(tag);
-        tag.getCertificates().add(this);
+    private List<TagDto> tags = new ArrayList<>();
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
     }
-    public void removeTag(Long tagId){
-        TagDto tag = this.tags.stream().filter(t-> Objects.equals(t.getId(), tagId)).findFirst().orElse(null);
-        if(tag!=null){
-            this.tags.remove(tag);
-            tag.getCertificates().remove(this);
-        }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
 }

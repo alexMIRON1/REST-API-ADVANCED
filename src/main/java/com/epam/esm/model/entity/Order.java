@@ -23,8 +23,8 @@ import java.util.Objects;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Table(name = "orders")
+@ToString
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +38,14 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "gift_certificate_id")
     private GiftCertificate giftCertificate;
+
+    public Order(BigDecimal price, Instant purchaseTime, User user, GiftCertificate giftCertificate) {
+        this.price = price;
+        this.purchaseTime = purchaseTime;
+        this.user = user;
+        this.giftCertificate = giftCertificate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

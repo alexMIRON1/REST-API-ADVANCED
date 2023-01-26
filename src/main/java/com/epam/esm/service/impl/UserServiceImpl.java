@@ -1,26 +1,29 @@
 package com.epam.esm.service.impl;
 
+import com.epam.esm.model.entity.GiftCertificate;
+import com.epam.esm.model.entity.Order;
 import com.epam.esm.model.entity.User;
+import com.epam.esm.model.repository.OrderRepository;
 import com.epam.esm.model.repository.UserRepository;
 import com.epam.esm.service.UserService;
 import com.epam.esm.service.exception.NoSuchEntityException;
 import com.epam.esm.service.exception.WrongDataException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.time.Instant;
 import java.util.Optional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
-    @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    private final OrderRepository orderRepository;
 
 
     @Override
@@ -39,8 +42,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> getAll() {
-        return userRepository.findAll();
+    public Page<User> getAll(int page, int size) {
+        return userRepository.findAll(PageRequest.of(page, size));
     }
 
     @Override
@@ -74,15 +77,18 @@ public class UserServiceImpl implements UserService {
         log.info("successfully set orders " + entity.getOrders() + " to user -> " + user);
 
     }
-
     @Override
-    public User getUserByHighestCostOfOrders() {
-        User user = userRepository.getUserByHighestCostOfOrders();
-        if(user==null){
-            log.error("user is null");
-            throw new NoSuchEntityException("User does not exist");
-        }
-        log.info("successfully get user by highest cor of all orders -> " + user);
-        return user;
+    @Transactional
+    public void makeOrder(User user, GiftCertificate giftCertificate) {
+        Order order = new Order(giftCertificate.getPrice(), Instant.now(),user,giftCertificate);
+        orderRepository.save(order);
+        log.info("successfully saved order " + order);
+        order.setUser(user);
+        update(user);
+    }
+    @Override
+    public void removedOrder(User user, Long orderId) {
+        orderRepository.deleteById(orderId);
+        log.info("successfully removed order by order's id " + orderId + " from user " + user.getOrders());
     }
 }

@@ -1,7 +1,9 @@
 package com.epam.esm;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
 public class RestApiAdvancedApplication {
@@ -10,4 +12,8 @@ public class RestApiAdvancedApplication {
         SpringApplication.run(RestApiAdvancedApplication.class, args);
     }
 
+    @Bean
+    public ModelMapper modelMapper(){
+        return new ModelMapper();
+    }
 }

@@ -3,29 +3,27 @@ package com.epam.esm.service.impl;
 import com.epam.esm.model.entity.GiftCertificate;
 import com.epam.esm.model.entity.Tag;
 import com.epam.esm.model.repository.GiftCertificateRepository;
-import com.epam.esm.model.repository.TagRepository;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.exception.NoSuchEntityException;
 import com.epam.esm.service.exception.WrongDataException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
+import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service
 @Slf4j
 public class GiftCertificateServiceImpl implements GiftCertificateService {
     private final GiftCertificateRepository giftCertificateRepository;
-    private final TagRepository tagRepository;
     @Autowired
-    public GiftCertificateServiceImpl(GiftCertificateRepository giftCertificateRepository, TagRepository tagRepository) {
+    public GiftCertificateServiceImpl(GiftCertificateRepository giftCertificateRepository) {
         this.giftCertificateRepository = giftCertificateRepository;
-        this.tagRepository = tagRepository;
     }
 
     @Override
@@ -44,8 +42,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     }
 
     @Override
-    public List<GiftCertificate> getAll() {
-        return giftCertificateRepository.findAll();
+    public Page<GiftCertificate> getAll(int page, int size) {
+        return giftCertificateRepository.findAll(PageRequest.of(page, size));
     }
 
     @Override
@@ -54,6 +52,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
             log.error("gift certificate is null");
             throw new WrongDataException("Gift certificate was null");
         }
+        model.setCreateDate(Instant.now());
+        model.setLastUpdateDate(Instant.now());
         giftCertificateRepository.save(model);
         log.info("successfully created gift certificate -> " + model);
     }
@@ -72,7 +72,15 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
 
     @Override
     @Transactional
-    public void update(GiftCertificate entity) {
+    public void update(GiftCertificate giftCertificate) {
+        giftCertificateRepository.save(giftCertificate);
+        giftCertificate.setLastUpdateDate(Instant.now());
+
+    }
+
+    @Override
+    @Transactional
+    public void updateFieldEntity(GiftCertificate entity) {
         GiftCertificate giftCertificate = giftCertificateRepository.findById(entity.getId())
                 .orElseThrow(()->new NoSuchEntityException("Gift certificate with id " + entity.getId()
                         + " does not exist"));
@@ -82,52 +90,57 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
         }
         if(entity.getDuration()!=null){
             giftCertificate.setDuration(entity.getDuration());
+            giftCertificate.setLastUpdateDate(Instant.now());
             log.info("successfully updated duration " + entity.getDuration() + " for " + giftCertificate);
         }
         if(entity.getPrice()!=null){
             giftCertificate.setPrice(entity.getPrice());
+            giftCertificate.setLastUpdateDate(Instant.now());
             log.info("successfully updated price " + entity.getPrice() + " for " + giftCertificate);
         }
-
+        if(!entity.getTags().isEmpty()){
+            giftCertificate.setTags(entity.getTags());
+            giftCertificate.setLastUpdateDate(Instant.now());
+            log.info("successfully updated tags " + entity.getTags() + " for " + giftCertificate);
+            giftCertificateRepository.save(giftCertificate);
+        }
     }
 
     @Override
-    public Map<List<GiftCertificate>, List<Tag>> getCertificatesWithTagsByPartOfDescription(String description) {
+    public List<GiftCertificate> getCertificatesWithTagsByPartOfDescription(String description) {
         List<GiftCertificate> giftCertificates = giftCertificateRepository.
                 getGiftCertificateByPartOfDescription(description);
-        List<Tag> tags = tagRepository.getTagsByPartOfDescription(description);
-        checkCertificatesAndTags(giftCertificates,tags);
-        Map<List<GiftCertificate>, List<Tag>> result = new HashMap<>();
-        result.put(giftCertificates,tags);
-        log.info("successfully got map " + result +  " by part of description " + description);
-        return result;
+        log.info("successfully got list  " + giftCertificates +  " by part of description " + description);
+        return giftCertificates;
     }
 
     @Override
-    public Map<List<GiftCertificate>, List<Tag>> getCertificatesWithTagsSortByCreateDateASC() {
-        List<GiftCertificate> giftCertificates = giftCertificateRepository.
-                getGiftCertificatesSortedByCreateDateASC();
-        List<Tag> tags  = tagRepository.getTagsSortedByCreateDateASC();
-
-        checkCertificatesAndTags(giftCertificates,tags);
-
-        Map<List<GiftCertificate>, List<Tag>> result = new HashMap<>();
-        result.put(giftCertificates,tags);
-        log.info("successfully got map " + result + " sorted by create date asc ");
-        return result;
+    public  Page<GiftCertificate> getCertificatesWithTagsSortByCreateDateASC(int page,int size) {
+        Page<GiftCertificate> giftCertificates = giftCertificateRepository.
+                getGiftCertificatesSortedByCreateDateASC(PageRequest.of(page, size));
+        log.info("successfully got list  " + giftCertificates + " sorted by create date asc ");
+        return giftCertificates;
     }
 
-    /**
-     * Method for checking that list of gift certificates or/and tags are empty.
-     * @param giftCertificates list of gift certificates
-     * @param tags list of tags
-     */
-    private void checkCertificatesAndTags(List<GiftCertificate> giftCertificates,
-                                             List<Tag> tags){
-        if(giftCertificates.isEmpty() || tags.isEmpty()){
-            log.error("gift certificates " + giftCertificates + " are empty or tag are empty " + tags );
-            throw new NoSuchEntityException("List of gift certificates or/and tags are empty");
+    @Override
+    @Transactional
+    public void addTag(GiftCertificate giftCertificate,Tag tag) {
+        if (giftCertificate.getTags().contains(tag)){
+            log.error("This tag" + tag + " already was in gift certificate " + giftCertificate);
+            throw new WrongDataException("Such tag already exist in this certificate " + giftCertificate.getTags());
         }
+        giftCertificate.addTag(tag);
+        giftCertificate.setLastUpdateDate(Instant.now());
+        giftCertificateRepository.save(giftCertificate);
+        log.info("successfully added tag " + tag +  " to gift certificate " + giftCertificate);
+    }
 
+    @Override
+    @Transactional
+    public void removeTag(GiftCertificate giftCertificate,Long tagId) {
+        giftCertificate.removeTag(tagId);
+        giftCertificate.setLastUpdateDate(Instant.now());
+        giftCertificateRepository.save(giftCertificate);
+        log.info("successfully deleted tag by tag's id " + tagId + " from gift certificate " + giftCertificate );
     }
 }
