@@ -88,4 +88,14 @@ public class TagServiceImpl implements TagService {
         log.info("successfully got certificates with tags " + result + " by tag's name " + name);
         return result;
     }
+
+    @Override
+    public Tag getTheMostWidelyUsedTagOfUserWithTheHighestCostOfOrders() {
+        Long id = tagRepository.findIdTheMostPopularTagOfUserWithTheHighestCostOfOrders();
+        Optional<Tag> tag = tagRepository.findById(id);
+        if(tag.isEmpty()){
+            throw new NoSuchEntityException("This tag does not exist");
+        }
+        return tag.get();
+    }
 }

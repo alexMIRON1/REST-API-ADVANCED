@@ -4,6 +4,7 @@ import com.epam.esm.model.entity.Order;
 import com.epam.esm.model.repository.OrderRepository;
 import com.epam.esm.service.OrderService;
 import com.epam.esm.service.exception.NoSuchEntityException;
+import com.epam.esm.service.exception.UnsupportedOperationException;
 import com.epam.esm.service.exception.WrongDataException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,23 +48,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void insert(Order model) {
-        if(model==null){
-            log.error("order is null");
-            throw new WrongDataException("Order was null");
-        }
-        orderRepository.save(model);
-        log.info("successfully created order -> " + model );
+        throw new UnsupportedOperationException("This method does not support");
     }
 
     @Override
     public void remove(Order item) {
-        Optional<Order> optionalOrder = orderRepository.findById(item.getId());
-        if(optionalOrder.isEmpty()){
-            log.error("order " + optionalOrder + " with id " + item.getId() + " does not exist" );
-            throw new NoSuchEntityException("Order with id " + item.getId() + " does not exist");
-        }
-        orderRepository.delete(optionalOrder.get());
-        log.info("successfully deleted order " + optionalOrder);
+        throw new UnsupportedOperationException("This method does not support");
     }
 
     @Override

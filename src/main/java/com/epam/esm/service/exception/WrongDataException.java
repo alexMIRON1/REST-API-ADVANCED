@@ -1,5 +1,6 @@
 package com.epam.esm.service.exception;
 
+
 /**
  * {@code WrongDataException} is generated in case when some data are wrong
  * @author Oleksandr Myronenko

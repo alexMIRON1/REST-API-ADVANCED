@@ -17,4 +17,10 @@ public interface TagService extends CRDService<Tag>{
      * @return map where key is list of certificates, values is list of tags
      */
     Map<List<GiftCertificate>, List<Tag>> getCertificatesWithTagsByName(String name);
+
+    /**
+     * Method for getting the most popular tag of user with the highest cost of orders.
+     * @return tag
+     */
+    Tag getTheMostWidelyUsedTagOfUserWithTheHighestCostOfOrders();
 }

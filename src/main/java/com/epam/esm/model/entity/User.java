@@ -11,9 +11,9 @@ import lombok.Setter;
 import lombok.ToString;
 import org.hibernate.Hibernate;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 @Entity(name = "user")
 @Table(name = "users")
@@ -29,7 +29,7 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     @ToString.Exclude
-    private Set<Order> orders = new HashSet<>();
+    private List<Order> orders = new ArrayList<>();
 
     @Override
     public boolean equals(Object o) {

@@ -26,6 +26,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Class {@code TagController} represents endpoint of API which allows you to do operations on tags.
+ * {@code TagController} is accessed to send request by /tags.
+ * @author Oleksandr Myronenko
+ */
 @RestController
 @RequestMapping("/tags")
 @RequiredArgsConstructor
@@ -124,5 +129,10 @@ public class TagController {
                 .stream().collect(Collectors.toMap(k->k.getKey()
                         .stream().map(certificateConverter::toModel).toList()
                         ,v->v.getValue().stream().map(tagConverter::toModel).toList()));
+    }
+    @GetMapping("/popular")
+    @ResponseStatus(HttpStatus.OK)
+    public TagDto getTheMostWidelyUsedTagOfUserWithTheHighestCostOfOrders(){
+        return tagConverter.toModel(tagService.getTheMostWidelyUsedTagOfUserWithTheHighestCostOfOrders());
     }
 }

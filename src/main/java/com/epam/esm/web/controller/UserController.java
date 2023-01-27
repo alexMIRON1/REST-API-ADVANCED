@@ -25,6 +25,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Class {@code UserController} represents endpoint of API which allows you to do operations on users.
+ * {@code UserController} is accessed to send request by /users.
+ * @author Oleksandr Myronenko
+ */
 @RestController
 @RequestMapping("/users")
 @RequiredArgsConstructor

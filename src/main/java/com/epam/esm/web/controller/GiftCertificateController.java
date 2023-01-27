@@ -22,7 +22,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
+/**
+ * Class {@code GiftCertificateController} represents endpoint of API which allows you to do operations
+ * on gift certificates.
+ * {@code GiftCertificateController} is accessed to send request by /certificates.
+ * @author Oleksandr Myronenko
+ */
 @RestController
 @RequestMapping("/certificates")
 @RequiredArgsConstructor

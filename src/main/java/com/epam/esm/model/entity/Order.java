@@ -18,7 +18,7 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 
-@Entity(name = "order")
+@Entity(name = "orders")
 @Getter
 @Setter
 @NoArgsConstructor

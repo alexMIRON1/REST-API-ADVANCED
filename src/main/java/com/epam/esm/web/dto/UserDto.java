@@ -5,8 +5,8 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.hateoas.RepresentationModel;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 @Getter
 @Setter
 @ToString
@@ -14,7 +14,7 @@ public class UserDto extends RepresentationModel<UserDto> {
     private Long id;
     private String name;
 
-    private Set<OrderDto> orders = new HashSet<>();
+    private List<OrderDto> orders = new ArrayList<>();
 
     @Override
     public boolean equals(Object obj) {
