@@ -21,5 +21,5 @@ public interface UserService extends CRUDService<User>{
      * @param user user
      * @param orderId order's id
      */
-    void removedOrder(User user, Long orderId);
+    void removeOrder(User user, Long orderId);
 }

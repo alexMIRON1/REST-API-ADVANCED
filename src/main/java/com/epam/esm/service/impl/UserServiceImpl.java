@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
         update(user);
     }
     @Override
-    public void removedOrder(User user, Long orderId) {
+    public void removeOrder(User user, Long orderId) {
         orderRepository.deleteById(orderId);
         log.info("successfully removed order by order's id " + orderId + " from user " + user.getOrders());
     }

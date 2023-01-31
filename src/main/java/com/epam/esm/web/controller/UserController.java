@@ -9,7 +9,7 @@ import com.epam.esm.service.UserService;
 import com.epam.esm.web.dto.GiftCertificateDto;
 import com.epam.esm.web.dto.OrderDto;
 import com.epam.esm.web.dto.UserDto;
-import com.epam.esm.web.mapper.Converter;
+import com.epam.esm.web.converter.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PagedResourcesAssembler;
@@ -96,7 +96,7 @@ public class UserController {
      */
     @DeleteMapping
     @ResponseStatus(HttpStatus.OK)
-    public void delete(@RequestBody UserDto userDto){
+    public void remove(@RequestBody UserDto userDto){
         userService.remove(userConverter.toEntity(userDto));
     }
 
@@ -111,6 +111,6 @@ public class UserController {
                             @RequestBody OrderDto orderDto){
         UserDto userDto = userConverter.toModel(userService.getById(userId));
         OrderDto order = orderConverter.toModel(orderService.getById(orderDto.getId()));
-        userService.removedOrder(userConverter.toEntity(userDto), order.getId());
+        userService.removeOrder(userConverter.toEntity(userDto), order.getId());
     }
 }

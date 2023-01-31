@@ -3,7 +3,7 @@ package com.epam.esm.web.controller;
 import com.epam.esm.model.entity.GiftCertificate;
 import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.web.dto.GiftCertificateDto;
-import com.epam.esm.web.mapper.Converter;
+import com.epam.esm.web.converter.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PagedResourcesAssembler;

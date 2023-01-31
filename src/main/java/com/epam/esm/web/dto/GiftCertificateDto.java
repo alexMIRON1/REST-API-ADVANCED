@@ -2,7 +2,9 @@ package com.epam.esm.web.dto;
 
 import com.epam.esm.web.serializer.InstantSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 import org.springframework.hateoas.RepresentationModel;
@@ -14,6 +16,8 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@AllArgsConstructor
+@NoArgsConstructor
 public class GiftCertificateDto extends RepresentationModel<GiftCertificateDto> {
     private Long id;
     private String name;

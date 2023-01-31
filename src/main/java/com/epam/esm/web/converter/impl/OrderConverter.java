@@ -1,8 +1,8 @@
-package com.epam.esm.web.mapper.impl;
+package com.epam.esm.web.converter.impl;
 
 import com.epam.esm.model.entity.Order;
 import com.epam.esm.web.dto.OrderDto;
-import com.epam.esm.web.mapper.Converter;
+import com.epam.esm.web.converter.Converter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

@@ -6,7 +6,7 @@ import com.epam.esm.service.GiftCertificateService;
 import com.epam.esm.service.TagService;
 import com.epam.esm.web.dto.GiftCertificateDto;
 import com.epam.esm.web.dto.TagDto;
-import com.epam.esm.web.mapper.Converter;
+import com.epam.esm.web.converter.Converter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.web.PagedResourcesAssembler;
