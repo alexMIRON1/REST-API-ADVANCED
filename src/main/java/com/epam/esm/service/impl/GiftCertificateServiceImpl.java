@@ -73,8 +73,8 @@ public class GiftCertificateServiceImpl implements GiftCertificateService {
     @Override
     @Transactional
     public void update(GiftCertificate giftCertificate) {
-        giftCertificateRepository.save(giftCertificate);
         giftCertificate.setLastUpdateDate(Instant.now());
+        giftCertificateRepository.save(giftCertificate);
 
     }
 

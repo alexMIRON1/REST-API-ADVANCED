@@ -1,4 +1,4 @@
-package com.epam.esm.web;
+package com.epam.esm.layer;
 
 import com.epam.esm.model.entity.GiftCertificate;
 import com.epam.esm.model.entity.Order;

@@ -1,4 +1,4 @@
-package com.epam.esm.web.controller;
+package com.epam.esm.layer.web.controller;
 
 import com.epam.esm.model.entity.Order;
 import com.epam.esm.service.OrderService;
@@ -14,11 +14,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
+import org.springframework.hateoas.PagedModel.PageMetadata;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -27,7 +31,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @WebMvcTest(OrderController.class)
-@ComponentScan("com.epam.esm.web")
+@ComponentScan("com.epam.esm.layer")
  class OrderControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -37,6 +41,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
     private OrderService orderService;
     @MockBean
     private Converter<Order,OrderDto> orderConverter;
+    @MockBean
+    private PagedResourcesAssembler<Order> pagedResourcesAssembler;
     @Autowired
     private Order order;
     @Autowired
@@ -53,6 +59,21 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         when(orderConverter.toModel(order)).thenReturn(orderDto);
         mockMvc.perform(get("/orders/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.id",is(order.getId().intValue())));
+    }
+    @Test
+    @SneakyThrows
+    void getAllTest(){
+        PageMetadata metadata =  new PageMetadata(10, 1,200);
+        int page = 1;
+        int size = 10;
+        Page<Order> orderPage = new PageImpl<>(List.of(order));
+        when(orderService.getAll(page,size)).thenReturn(orderPage);
+        PagedModel<OrderDto> orderDtoPagedModel =PagedModel.of(List.of(orderDto),
+                metadata);
+        when(pagedResourcesAssembler.toModel(orderPage,orderConverter))
+                .thenReturn(orderDtoPagedModel);
+        mockMvc.perform(get("/orders").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
     @Test
     @SneakyThrows

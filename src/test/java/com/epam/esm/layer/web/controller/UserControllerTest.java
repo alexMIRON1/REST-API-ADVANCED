@@ -1,4 +1,4 @@
-package com.epam.esm.web.controller;
+package com.epam.esm.layer.web.controller;
 
 import com.epam.esm.model.entity.GiftCertificate;
 import com.epam.esm.model.entity.Order;
@@ -20,10 +20,16 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.hateoas.PagedModel.PageMetadata;
+import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.doNothing;
@@ -35,7 +41,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
-@ComponentScan("com.epam.esm.web")
+@ComponentScan("com.epam.esm.layer")
 class UserControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
@@ -56,6 +62,8 @@ class UserControllerTest {
     private Converter<GiftCertificate, GiftCertificateDto> certificateConverter;
     @MockBean
     private Converter<Order, OrderDto> orderConverter;
+    @MockBean
+    private PagedResourcesAssembler<User> pagedResourcesAssembler;
     @Autowired
     private User user;
     @Autowired
@@ -80,6 +88,21 @@ class UserControllerTest {
         when(userConverter.toModel(user)).thenReturn(userDto);
         mockMvc.perform(get("/users/1").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk()).andExpect(jsonPath("$.name",is(userDto.getName())));
+    }
+    @Test
+    @SneakyThrows
+    void getAllTest(){
+        PageMetadata metadata =  new PageMetadata(10, 1,200);
+        int page = 1;
+        int size = 10;
+        Page<User> userPage = new PageImpl<>(List.of(user));
+        when(userService.getAll(page,size)).thenReturn(userPage);
+        PagedModel<UserDto> userDtoPagedModel =PagedModel.of(List.of(userDto),
+                metadata);
+        when(pagedResourcesAssembler.toModel(userPage,userConverter))
+                .thenReturn(userDtoPagedModel);
+        mockMvc.perform(get("/users").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
     @Test
     @SneakyThrows

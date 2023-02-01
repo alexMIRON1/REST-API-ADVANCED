@@ -1,6 +1,7 @@
-package com.epam.esm.web.converter;
+package com.epam.esm.layer.web.converter;
 
 import com.epam.esm.model.entity.GiftCertificate;
+import com.epam.esm.web.converter.Converter;
 import com.epam.esm.web.dto.GiftCertificateDto;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +10,7 @@ import org.springframework.context.annotation.ComponentScan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@ComponentScan("com.epam.esm.web")
+@ComponentScan("com.epam.esm.layer")
  class GiftCertificateConverterTest {
     @Autowired
     private GiftCertificate giftCertificate;
