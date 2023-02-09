@@ -79,13 +79,12 @@ public class UserServiceImpl implements UserService {
     }
     @Override
     @Transactional
-    public Order makeOrder(User user, GiftCertificate giftCertificate) {
+    public void makeOrder(User user, GiftCertificate giftCertificate) {
         Order order = new Order(giftCertificate.getPrice(), Instant.now(),user,giftCertificate);
         orderRepository.save(order);
         log.info("successfully saved order " + order);
         order.setUser(user);
         update(user);
-        return order;
     }
     @Override
     public void removeOrder(User user, Long orderId) {

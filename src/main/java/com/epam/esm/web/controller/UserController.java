@@ -79,18 +79,15 @@ public class UserController {
      * This method is used to make order - buy certificate.
      * @param userId user's id
      * @param giftCertificateDto gift certificate dto
-     * @return orderDto order dto
      */
     @PostMapping("/{userId}/order")
     @ResponseStatus(HttpStatus.OK)
-    public OrderDto makeOrder(@PathVariable("userId") Long userId,
+    public void makeOrder(@PathVariable("userId") Long userId,
                           @RequestBody GiftCertificateDto giftCertificateDto){
         GiftCertificateDto certificateDto = certificateConverter
                 .toModel(giftCertificateService.getById(giftCertificateDto.getId()));
         UserDto user = userConverter.toModel(userService.getById(userId));
-        return orderConverter.toModel(userService.
-               makeOrder(userConverter.toEntity(user),
-                       certificateConverter.toEntity(certificateDto)));
+        userService.makeOrder(userConverter.toEntity(user),certificateConverter.toEntity(certificateDto));
     }
 
     /**
