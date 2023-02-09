@@ -9,6 +9,8 @@ import org.hibernate.Hibernate;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.ArrayList;
@@ -26,7 +28,11 @@ public class User {
     @Id
     private Long id;
     private String name;
-
+    @ToString.Exclude
+    private String password;
+    @ManyToOne
+    @JoinColumn(name = "role_id",nullable = false)
+    private Role role;
     @OneToMany(mappedBy = "user")
     @ToString.Exclude
     private List<Order> orders = new ArrayList<>();

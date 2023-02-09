@@ -1,6 +1,7 @@
 package com.epam.esm.service;
 
 import com.epam.esm.model.entity.GiftCertificate;
+import com.epam.esm.model.entity.Order;
 import com.epam.esm.model.entity.User;
 /**
  * Interface {@code TagService} describes abstract behavior for working with {@link User} objects.
@@ -13,8 +14,9 @@ public interface UserService extends CRUDService<User>{
      * Method for making order.
      * @param  user that bought certificate
      * @param giftCertificate gift certificate that was bought by user
+     * @return order
      */
-    void makeOrder(User user,GiftCertificate giftCertificate);
+    Order makeOrder(User user, GiftCertificate giftCertificate);
 
     /**
      * Method for remove order from user.

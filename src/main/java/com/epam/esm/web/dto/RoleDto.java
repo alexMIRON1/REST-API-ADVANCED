@@ -1,27 +1,23 @@
 package com.epam.esm.web.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 import org.springframework.hateoas.RepresentationModel;
 
-import java.util.ArrayList;
 import java.util.List;
+
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDto extends RepresentationModel<UserDto> {
-    private Long id;
+public class RoleDto extends RepresentationModel<RoleDto> {
+    private Integer id;
     private String name;
-    private String password;
-
-    private RoleDto role;
-
-    private List<OrderDto> orders = new ArrayList<>();
+    @JsonIgnore
+    private List<UserDto> users;
 
     @Override
     public boolean equals(Object obj) {
@@ -31,5 +27,13 @@ public class UserDto extends RepresentationModel<UserDto> {
     @Override
     public int hashCode() {
         return super.hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return "RoleDto{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
