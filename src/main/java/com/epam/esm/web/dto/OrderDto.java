@@ -25,17 +25,6 @@ public class OrderDto extends RepresentationModel<OrderDto> {
     private UserDto user;
 
     private GiftCertificateDto giftCertificate;
-
-    @Override
-    public boolean equals(Object obj) {
-        return super.equals(obj);
-    }
-
-    @Override
-    public int hashCode() {
-        return super.hashCode();
-    }
-
     @Override
     @NonNull
     public String toString() {

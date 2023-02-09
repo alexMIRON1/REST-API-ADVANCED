@@ -17,9 +17,6 @@ import java.util.List;
 public class UserDto extends RepresentationModel<UserDto> {
     private Long id;
     private String name;
-    private String password;
-
-    private RoleDto role;
 
     private List<OrderDto> orders = new ArrayList<>();
 
